@@ -10,29 +10,27 @@ export default function CreateNewProject({ noProjectHandler, addProjectFn }) {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState(new Date());
+  const [dueDate, setDueDate] = useState(new Date().toLocaleDateString("en-us"));
 
   function handleCreateProject() {
-    setTitle(refTitle.current.getValue());
-    setDescription(refDescription.current.getValue());
-    setDueDate(refDueDate.current.getValue());
     addProjectFn({
-      title: refTitle.current.getValue(),
-      description: refDescription.current.getValue(),
-      dueDate: refDueDate.current.getValue()
+      title: title,
+      description: description,
+      dueDate: dueDate,
+      tasks: []
     });
     noProjectHandler();
   }
 
   return (
     <form className="">
-      <div className="text-right ">
+      <div className="text-right pr-6">
         <Button archetype="cancel" onClick={noProjectHandler}>Cancel</Button>
         <Button archetype="save" onClick={handleCreateProject}>Save</Button>
       </div>
-      <Input ref={refTitle} label="Title" />
-      <Input ref={refDescription} label="Description" />
-      <Input ref={refDueDate} type="date" label="Description" />
+      <Input ref={refTitle} label="Title" onChange={(e) => setTitle(e.target.value)} required/>
+      <Input ref={refDescription} label="Description" type="textarea" onChange={(e) => setDescription(e.target.value)} />
+      <Input ref={refDueDate} label="Due Date" defaultValue={dueDate} type="date" onChange={(e) => setDueDate(e.target.value)} required/>
     </form>
   );
 }

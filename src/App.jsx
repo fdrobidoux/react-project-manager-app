@@ -10,13 +10,15 @@ function App() {
   const [projectList, setProjectList] = useState([{
     id: 0,
     title: "Test Project",
-    description: "Some description blah blah blah blah blah blah blah blah",
-    dueDate: new Date("02-15-1994")
+    description: "Some description\nblah blah blah blah blah blah blah blah",
+    dueDate: new Date("02-15-1994"),
+    tasks: []
   }, {
     id: 1,
     title: "Another Project That's long af",
     description: "Lorem ipsum sir dolor hames or whatever",
-    dueDate: new Date("01-29-2024")
+    dueDate: new Date("01-29-2024"),
+    tasks: ["Do something", "Ignore my cats"]
   }]);
   const [currentProject, setCurrentProject] = useState(null);
 
@@ -52,13 +54,27 @@ function App() {
     setProjectList(projectList);
   }
 
+  function addTask(taskName) {
+    let newTasks = [...currentProject.tasks];
+    newTasks.push(taskName);
+    currentProject.tasks = newTasks;
+    setCurrentProject(currentProject, true);
+  }
+
+  function removeTask(taskIndex) {
+    let newTasks = [...currentProject.tasks];
+    newTasks.splice(taskIndex, 1);
+    currentProject.tasks = newTasks;
+    setCurrentProject(currentProject, true);
+  }
+
   return (
     <div className="grid grid-cols-12 gap-4">
       <Sidebar newProjectHandler={showNewProjectForm} projectList={projectList} showProjectPageHandler={showProjectPage} currentProject={currentProject} />
       <div className="col-span-8 pt-16">
         {currentPage == "NoProjectsSelected" ? <NoProjectSelected newProjectHandler={showNewProjectForm} /> : undefined}
         {currentPage == "CreateNewProject" ? <CreateNewProject noProjectHandler={showNoProjectSelected} addProjectFn={addProject} /> : undefined}
-        {currentPage == "ShowProject" ? <ShowProject currentproject={currentProject} deleteProjectFn={deleteProject} showNoProjectSelectedHandler={showNoProjectSelected} /> : undefined}
+        {currentPage == "ShowProject" ? <ShowProject project={currentProject} deleteProjectFn={deleteProject} showNoProjectSelectedHandler={showNoProjectSelected} addTaskFn={addTask} removeTaskFn={removeTask} /> : undefined}
       </div>
     </div>
   );

@@ -1,33 +1,18 @@
 import { useState } from "react";
 import Button from "../components/Button";
+import ProjectDetails from "../components/ProjectDetails";
+import TaskList from "../components/TaskList";
 
-export default function ShowProject({ currentproject, deleteProjectFn, showNoProjectSelectedHandler }) {
-  const dateOptions = {
-    month: 'short', 
-    day: 'numeric'
-  }
-
-  function formatDate(date) {
-    return date.toLocaleDateString("en-us", dateOptions) + ", " + date.getFullYear();
-  }
-
-  function set
-
-  function onClickDeleteButton(e) {
-    deleteProjectFn(currentproject.id);
-    showNoProjectSelectedHandler();
-  }
-
+export default function ShowProject({ project, deleteProjectFn, showNoProjectSelectedHandler, addTaskFn, removeTaskFn }) {
   return (
     <div className="px-4">
-      <h1 className="text-3xl font-bold text-maroon float-left">{currentproject.title}</h1>
-      <div className="float-right">
-        <Button archetype="cancel" handler={onClickDeleteButton}>Delete</Button>
-      </div>
-      <div className="clear-both">
-        <p className="text-classygrey">{formatDate(currentproject.dueDate)}</p>
-        <p className="py-2 leading-loose">{currentproject.description}</p>
-      </div>
+      <ProjectDetails 
+        project={project} 
+        deleteProjectFn={deleteProjectFn} 
+        showNoProjectSelectedHandler={showNoProjectSelectedHandler} 
+      />
+      <hr className="my-4 border-parcheminwhite-dark border-t-2"/>
+      <TaskList project={project} addTaskFn={addTaskFn} removeTaskFn={removeTaskFn} />
     </div>
   );
 }
