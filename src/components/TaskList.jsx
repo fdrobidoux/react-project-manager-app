@@ -2,19 +2,17 @@ import { useRef, useState } from "react";
 import Button from "./Button";
 
 export default function TaskList({project, addTaskFn, removeTaskFn}) {
-  const taskNameRef = useRef();
-
   const [taskInputValue, setTaskInputValue] = useState();
   const [tasks, setTasks] = useState(project.tasks);
 
   function addTaskLocal(e) {
     e.preventDefault(true);
-    let taskName = taskNameRef.current.value;
+    let taskName = e.target.taskName.value;
     let newTasks = [...tasks];
     newTasks.push(taskName);
     setTasks(newTasks);
     addTaskFn(taskName);
-    taskNameRef.current.value = "";
+    e.target.taskName.value = "";
   }
 
   function removeTaskLocal(taskIndex) {
@@ -27,7 +25,7 @@ export default function TaskList({project, addTaskFn, removeTaskFn}) {
   return (<>
     <h2 className="text-2xl font-bold text-maroon-light pb-4">Tasks</h2>
     <form onSubmit={addTaskLocal}>
-      <input className="bg-parcheminwhite px-2 py-1" type="text" ref={taskNameRef} onChange={(e) => setTaskInputValue(e.target.value)} required/>
+      <input className="bg-parcheminwhite px-2 py-1" type="text" name="taskName" required/>
       <Button archetype="cancel" type="submit">Add Task</Button>
     </form>
     <ol className="py-2 mt-4 bg-parcheminwhite">
